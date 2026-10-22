@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="আমার এলাকা — বাংলাদেশের জেলা, উপজেলা, শহর, ইউনিয়ন ও গ্রামের পরিচিতি জানার তথ্যভিত্তিক উদ্যোগ।">
+  <meta name="theme-color" content="#0d4b3b">
+  <title>আমার এলাকা | বাংলাদেশের পরিচিতি</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="আমার এলাকা হোম">
+      <span class="brand-mark" aria-hidden="true">আ</span>
+      <span><strong>আমার এলাকা</strong><small>নিজের এলাকার গল্প, সবার জন্য</small></span>
+    </a>
+    <nav class="top-nav" aria-label="প্রধান নেভিগেশন">
+      <a href="#explore">এলাকা খুঁজুন</a>
+      <a href="#about">আমাদের সম্পর্কে</a>
+      <a href="#contribute">তথ্য যোগ করুন</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">বাংলাদেশকে জানুন, নিজের এলাকা থেকে</p>
+        <h1>আপনার এলাকার গল্প<br><span>এখন এক জায়গায়</span></h1>
+        <p class="hero-copy">জেলা, উপজেলা, শহর, ইউনিয়ন ও গ্রামের ইতিহাস, সংস্কৃতি, দর্শনীয় স্থান এবং পরিচিতি খুঁজে দেখুন।</p>
+        <form class="search-box" id="searchForm" role="search">
+          <label class="sr-only" for="searchInput">এলাকার নাম লিখুন</label>
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="এলাকার নাম লিখুন, যেমন: রাউজান" autocomplete="off">
+          <button type="submit">খুঁজুন</button>
+        </form>
+        <p class="search-hint">জেলা, উপজেলা, ইউনিয়ন বা গ্রামের নাম দিয়ে খুঁজতে পারবেন।</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="map-circle"><span class="map-pin pin-one">●</span><span class="map-pin pin-two">●</span><span class="map-pin pin-three">●</span><div class="map-label">বাংলাদেশ</div></div>
+        <div class="floating-note"><span>✦</span><div><strong>জানুন ও সংরক্ষণ করুন</strong><small>স্থানীয় ইতিহাস ও ঐতিহ্য</small></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="explore">
+      <div class="section-heading">
+        <div><p class="eyebrow dark">এক নজরে</p><h2>বিভাগ অনুযায়ী ঘুরে দেখুন</h2></div>
+        <p>বিভাগ নির্বাচন করুন অথবা উপরের সার্চে এলাকার নাম লিখুন।</p>
+      </div>
+      <div class="division-grid" id="divisionGrid" aria-label="বাংলাদেশের বিভাগ"></div>
+    </section>
+
+    <section class="section districts-section">
+      <div class="section-heading">
+        <div><p class="eyebrow dark">এলাকা নির্দেশিকা</p><h2 id="districtHeading">জেলাগুলো খুঁজুন</h2></div>
+        <label class="filter-label">বিভাগ
+          <select id="divisionFilter"><option value="">সব বিভাগ</option></select>
+        </label>
+      </div>
+      <div class="district-grid" id="districtGrid"></div>
+      <p class="empty-state" id="emptyState" hidden>এই নামে কোনো এলাকা পাওয়া যায়নি। বানান পরীক্ষা করে আবার চেষ্টা করুন।</p>
+      <div class="show-more-wrap"><button class="button-secondary" id="clearSearch" type="button">সার্চ / ফিল্টার মুছুন</button></div>
+    </section>
+
+    <section class="feature-band" id="about">
+      <div>
+        <p class="eyebrow">আমাদের লক্ষ্য</p>
+        <h2>বাংলাদেশের প্রতিটি এলাকার পরিচয় সংরক্ষণ</h2>
+        <p>স্থানীয় মানুষের জানা ইতিহাস, নির্ভরযোগ্য নথি এবং যাচাই করা তথ্য একসঙ্গে আনার একটি উদ্যোগ। তথ্যের সঙ্গে উৎস ও সাল উল্লেখ করাই আমাদের নীতি।</p>
+      </div>
+      <div class="feature-list">
+        <div><span>01</span><div><strong>ইতিহাস ও নামের উৎস</strong><small>এলাকার পরিচিতি, নামের উৎপত্তি ও গুরুত্বপূর্ণ ঘটনা</small></div></div>
+        <div><span>02</span><div><strong>প্রকৃতি ও দর্শনীয় স্থান</strong><small>নদী, পাহাড়, স্থাপনা ও স্থানীয় ঐতিহ্য</small></div></div>
+        <div><span>03</span><div><strong>তথ্য ও সূত্র</strong><small>তথ্যের উৎস, প্রকাশের সাল এবং যাচাইয়ের অবস্থা</small></div></div>
+      </div>
+    </section>
+
+    <section class="section contribute-section" id="contribute">
+      <div class="contribute-card">
+        <div class="contribute-icon">✎</div>
+        <div><h2>আপনার এলাকার তথ্য যোগ করতে চান?</h2><p>ইতিহাস, পুরোনো ছবি বা নির্ভরযোগ্য সূত্র থাকলে তথ্য পাঠানোর মাধ্যমে এই উদ্যোগে সহযোগিতা করতে পারেন।</p></div>
+        <a class="button-primary" href="mailto:info@example.com?subject=আমার%20এলাকা%20ওয়েবসাইটে%20তথ্য%20যোগ">তথ্য পাঠান</a>
+      </div>
+      <p class="small-note">নোট: প্রকাশের আগে info@example.com ঠিকানাটি নিজের ইমেইল দিয়ে বদলে দিন।</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="#"><span class="brand-mark">আ</span><span><strong>আমার এলাকা</strong><small>বাংলাদেশের এলাকার তথ্যভান্ডার</small></span></a>
+    <p>তথ্য প্রকাশের আগে নির্ভরযোগ্য উৎস দিয়ে যাচাই করুন।</p>
+    <small>© <span id="year"></span> আমার এলাকা · তথ্যভিত্তিক উদ্যোগ</small>
+  </footer>
+
+  <dialog id="areaDialog" class="area-dialog">
+    <button class="dialog-close" id="dialogClose" aria-label="বন্ধ করুন">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>
