@@ -1,143 +1,379 @@
-const divisions = [
-  {name:"ঢাকা", districts:["ঢাকা","গাজীপুর","গোপালগঞ্জ","কিশোরগঞ্জ","মাদারীপুর","মানিকগঞ্জ","মুন্সিগঞ্জ","নারায়ণগঞ্জ","নরসিংদী","রাজবাড়ী","শরীয়তপুর","টাঙ্গাইল","ফরিদপুর"]},
-  {name:"চট্টগ্রাম", districts:["চট্টগ্রাম","কক্সবাজার","কুমিল্লা","ব্রাহ্মণবাড়িয়া","চাঁদপুর","ফেনী","লক্ষ্মীপুর","নোয়াখালী","খাগড়াছড়ি","রাঙামাটি","বান্দরবান"]},
-  {name:"রাজশাহী", districts:["রাজশাহী","বগুড়া","জয়পুরহাট","নওগাঁ","নাটোর","চাঁপাইনবাবগঞ্জ","পাবনা","সিরাজগঞ্জ"]},
-  {name:"খুলনা", districts:["খুলনা","বাগেরহাট","চুয়াডাঙ্গা","যশোর","ঝিনাইদহ","কুষ্টিয়া","মাগুরা","মেহেরপুর","নড়াইল","সাতক্ষীরা"]},
-  {name:"বরিশাল", districts:["বরিশাল","বরগুনা","ভোলা","ঝালকাঠি","পটুয়াখালী","পিরোজপুর"]},
-  {name:"সিলেট", districts:["সিলেট","হবিগঞ্জ","মৌলভীবাজার","সুনামগঞ্জ"]},
-  {name:"রংপুর", districts:["রংপুর","দিনাজপুর","গাইবান্ধা","কুড়িগ্রাম","লালমনিরহাট","নীলফামারী","পঞ্চগড়","ঠাকুরগাঁও"]},
-  {name:"ময়মনসিংহ", districts:["ময়মনসিংহ","জামালপুর","নেত্রকোণা","শেরপুর"]}
-];
 
-// Starter content only. Add verified upazila/union/village records to areas.json or this array.
-const areaDetails = {
-  "চট্টগ্রাম": {
-    type:"জেলা", division:"চট্টগ্রাম",
-    intro:"চট্টগ্রাম বাংলাদেশের দক্ষিণ-পূর্বাঞ্চলের একটি গুরুত্বপূর্ণ জেলা ও বন্দরনগরী। এই পৃষ্ঠাটি একটি প্রাথমিক নমুনা; প্রকাশের আগে তথ্য ও সূত্র যাচাই করে পূরণ করুন।",
-    facts:[["বিভাগ","চট্টগ্রাম"],["এলাকার ধরন","জেলা"],["তথ্যের অবস্থা","প্রাথমিক নমুনা"],["যা যোগ করবেন","আয়তন, জনসংখ্যা, উপজেলা, ইতিহাস"]]
-  },
-  "রাউজান": {
-    type:"উপজেলা", division:"চট্টগ্রাম", district:"চট্টগ্রাম",
-    intro:"রাউজান চট্টগ্রাম জেলার একটি উপজেলা। স্থানীয় ইতিহাস, নামের উৎস, দর্শনীয় স্থান ও জনসংখ্যার তথ্য নির্ভরযোগ্য সূত্র দিয়ে যাচাই করে এখানে যুক্ত করা উচিত।",
-    facts:[["বিভাগ","চট্টগ্রাম"],["জেলা","চট্টগ্রাম"],["এলাকার ধরন","উপজেলা"],["তথ্যের অবস্থা","প্রাথমিক নমুনা"]]
-  },
-  "ঢাকা": {
-    type:"জেলা", division:"ঢাকা",
-    intro:"ঢাকা বাংলাদেশের রাজধানী ও দেশের অন্যতম প্রধান নগরকেন্দ্র। এই সাইটে জেলা এবং ঢাকা মহানগর সম্পর্কিত তথ্য আলাদা করে স্পষ্টভাবে উল্লেখ করা উচিত।",
-    facts:[["বিভাগ","ঢাকা"],["এলাকার ধরন","জেলা"],["তথ্যের অবস্থা","প্রাথমিক নমুনা"],["যা যোগ করবেন","উৎসসহ পরিসংখ্যান ও ইতিহাস"]]
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="বাংলাদেশের জেলা, উপজেলা ও দর্শনীয় স্থান খুঁজুন।">
+  <title>আমার এলাকা | বাংলাদেশের দর্শনীয় স্থান</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="hero">
+    <nav class="navbar">
+      <a class="logo" href="#">🌿 আমার এলাকা</a>
+      <span>বাংলাদেশকে জানুন</span>
+    </nav>
+
+    <div class="hero-content">
+      <p class="eyebrow">EXPLORE BANGLADESH</p>
+      <h1>আপনার এলাকার <span>দর্শনীয় স্থান</span> খুঁজুন</h1>
+      <p class="subtitle">
+        জেলা, উপজেলা, ইউনিয়ন কিংবা গ্রামের নাম লিখে খুঁজুন।
+      </p>
+
+      <form id="searchForm" class="search-box">
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="যেমন: চট্টগ্রাম, রাউজান, কক্সবাজার..."
+          autocomplete="off"
+        >
+        <button type="submit">খুঁজুন 🔍</button>
+      </form>
+
+      <div class="quick-search">
+        <span>জনপ্রিয়:</span>
+        <button type="button" data-query="চট্টগ্রাম">চট্টগ্রাম</button>
+        <button type="button" data-query="ঢাকা">ঢাকা</button>
+        <button type="button" data-query="কক্সবাজার">কক্সবাজার</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section-heading">
+      <div>
+        <p class="eyebrow dark">DISCOVER YOUR AREA</p>
+        <h2 id="resultsHeading">এলাকা ও দর্শনীয় স্থান</h2>
+      </div>
+      <span id="resultCount"></span>
+    </section>
+
+    <p id="status" class="status">তথ্য লোড হচ্ছে...</p>
+    <section id="results" class="results"></section>
+
+    <section class="info-box">
+      <h3>আপনার এলাকার তথ্য খুঁজে পাচ্ছেন না?</h3>
+      <p>
+        নতুন দর্শনীয় স্থানের তথ্য areas.json ফাইলে যোগ করতে হবে।
+        যাচাই করা তথ্য যোগ হলে সেটি সার্চে দেখাবে।
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> আমার এলাকা</p>
+    <p>বাংলাদেশের সৌন্দর্য, আপনার হাতের মুঠোয় 🇧🇩</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+:root {
+  --green: #176b50;
+  --dark: #0b3028;
+  --mint: #e5f3eb;
+  --text: #18372e;
+  --muted: #718078;
+  --background: #f6faf7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Hind Siliguri', sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
+
+.hero {
+  color: white;
+  padding: 22px max(18px, calc((100% - 1120px) / 2)) 60px;
+  background:
+    radial-gradient(ellipse at 85% 15%, #328365, transparent 38%),
+    linear-gradient(125deg, #092c24, #176b50);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.logo {
+  color: white;
+  text-decoration: none;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.navbar span {
+  color: #d4e9df;
+  font-size: 14px;
+}
+
+.hero-content {
+  max-width: 760px;
+  margin: 55px auto 0;
+  text-align: center;
+}
+
+.eyebrow {
+  color: #a6dfc0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 5vw, 49px);
+  line-height: 1.3;
+  margin: 10px 0;
+}
+
+.hero h1 span {
+  color: #a6e6c2;
+}
+
+.subtitle {
+  color: #d3e7dd;
+  margin-bottom: 25px;
+}
+
+.search-box {
+  display: flex;
+  gap: 8px;
+  padding: 7px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px #001b1433;
+}
+
+.search-box input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.search-box button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 22px;
+  background: var(--green);
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.quick-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  color: #d3e7dd;
+  font-size: 13px;
+}
+
+.quick-search button {
+  background: #ffffff14;
+  color: white;
+  border: 1px solid #ffffff55;
+  border-radius: 25px;
+  padding: 5px 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.container {
+  max-width: 1120px;
+  margin: auto;
+  padding: 35px 20px 55px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  margin: 5px 0;
+  font-size: 27px;
+}
+
+.dark {
+  color: var(--green);
+  margin-bottom: 0;
+}
+
+#resultCount {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.status {
+  padding: 13px 16px;
+  border-radius: 10px;
+  background: var(--mint);
+  color: var(--green);
+}
+
+.results {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.place-card {
+  padding: 20px;
+  background: white;
+  border: 1px solid #e1ebe5;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px #17352d08;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.place-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px #17352d12;
+}
+
+.card-title {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.place-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 45px;
+  height: 45px;
+  background: var(--mint);
+  border-radius: 12px;
+  font-size: 23px;
+}
+
+.place-card h3 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.location {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.description {
+  color: #53665d;
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 16px 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  color: #32644f;
+  background: #edf6f0;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  padding: 30px 18px;
+  text-align: center;
+  border: 1px dashed #cbdcd2;
+  background: white;
+  border-radius: 15px;
+}
+
+.empty h3 {
+  margin-top: 0;
+}
+
+.info-box {
+  margin-top: 35px;
+  padding: 20px;
+  background: #eaf4ee;
+  border-radius: 14px;
+  line-height: 1.8;
+}
+
+.info-box h3,
+.info-box p {
+  margin-top: 0;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 18px max(20px, calc((100% - 1120px) / 2));
+  border-top: 1px solid #e1ebe5;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  .results {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-};
-
-const icons = ["⌂","⌖","✦","⌁","◇","❋","◎","⌘"];
-const divisionGrid = document.getElementById("divisionGrid");
-const districtGrid = document.getElementById("districtGrid");
-const divisionFilter = document.getElementById("divisionFilter");
-const searchInput = document.getElementById("searchInput");
-const emptyState = document.getElementById("emptyState");
-const dialog = document.getElementById("areaDialog");
-const dialogContent = document.getElementById("dialogContent");
-let activeQuery = "";
-
-function normalize(value){ return (value || "").toLocaleLowerCase("bn").replace(/\s+/g," ").trim(); }
-function getDivisionForDistrict(name){ return divisions.find(d => d.districts.includes(name))?.name || ""; }
-
-function renderDivisions(){
-  divisionGrid.innerHTML = "";
-  divisions.forEach((division, index) => {
-    const button = document.createElement("button");
-    button.className = "division-card";
-    button.type = "button";
-    button.innerHTML = `<span class="division-symbol">${icons[index]}</span><span><strong>${division.name} বিভাগ</strong><small>${division.districts.length}টি জেলা</small></span>`;
-    button.addEventListener("click", () => {
-      divisionFilter.value = division.name;
-      activeQuery = "";
-      searchInput.value = "";
-      renderDistricts();
-      document.getElementById("districtHeading").textContent = `${division.name} বিভাগের জেলা`;
-      document.getElementById("explore").scrollIntoView({behavior:"smooth"});
-      document.getElementById("districtGrid").scrollIntoView({behavior:"smooth",block:"start"});
-    });
-    divisionGrid.appendChild(button);
-    const option = document.createElement("option");
-    option.value = division.name;
-    option.textContent = `${division.name} বিভাগ`;
-    divisionFilter.appendChild(option);
-  });
 }
 
-function renderDistricts(){
-  const selectedDivision = divisionFilter.value;
-  const query = normalize(activeQuery);
-  const results = [];
-  divisions.forEach(division => {
-    if(selectedDivision && division.name !== selectedDivision) return;
-    division.districts.forEach(district => {
-      const detail = areaDetails[district];
-      const searchable = normalize(`${district} ${division.name} ${detail?.type || "জেলা"} ${detail?.intro || ""}`);
-      if(!query || searchable.includes(query)) results.push({name:district, division:division.name, type:"জেলা"});
-    });
-  });
-  // Include the explicitly authored upazila example in search results.
-  if(!selectedDivision && (!query || normalize("রাউজান চট্টগ্রাম উপজেলা").includes(query)) && normalize("রাউজান চট্টগ্রাম উপজেলা").includes(query) && query){
-    results.unshift({name:"রাউজান", division:"চট্টগ্রাম", type:"উপজেলা"});
+@media (max-width: 550px) {
+  .results {
+    grid-template-columns: 1fr;
   }
-  districtGrid.innerHTML = "";
-  results.forEach(area => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "district-card";
-    button.innerHTML = `<span><strong>${area.name}</strong><small>${area.division} বিভাগ · ${area.type}</small></span><span class="arrow" aria-hidden="true">›</span>`;
-    button.addEventListener("click", () => openArea(area.name, area.division, area.type));
-    districtGrid.appendChild(button);
-  });
-  emptyState.hidden = results.length !== 0;
-}
 
-function openArea(name, division, type){
-  const detail = areaDetails[name];
-  const facts = detail?.facts || [["বিভাগ", division],["এলাকার ধরন", type],["তথ্যের অবস্থা","বিস্তারিত তথ্য এখনো যোগ করা হয়নি"],["পরবর্তী ধাপ","নির্ভরযোগ্য সূত্র দিয়ে তথ্য যাচাই ও সংযোজন"]];
-  const intro = detail?.intro || `${name} এলাকার বিস্তারিত পরিচিতি এই পৃষ্ঠায় যুক্ত করা হবে। ইতিহাস, জনসংখ্যা, আয়তন, দর্শনীয় স্থান এবং স্থানীয় সংস্কৃতির তথ্য প্রকাশের আগে নির্ভরযোগ্য উৎস দিয়ে যাচাই করা প্রয়োজন।`;
-  dialogContent.innerHTML = `
-    <p class="dialog-kicker">আমার এলাকা · এলাকার পরিচিতি</p>
-    <h2 class="dialog-title">${escapeHTML(name)}</h2>
-    <p class="dialog-description">${escapeHTML(intro)}</p>
-    <div class="detail-grid">${facts.map(([label,value]) => `<div class="detail-item"><strong>${escapeHTML(label)}</strong><small>${escapeHTML(value)}</small></div>`).join("")}</div>
-    <p class="source-warning">তথ্য যাচাইয়ের নীতি: জনসংখ্যা ও আয়তনের মতো সংখ্যার সঙ্গে তথ্যের সাল ও মূল উৎস উল্লেখ করুন। অনুমানকে নিশ্চিত ইতিহাস হিসেবে প্রকাশ করবেন না।</p>`;
-  dialog.showModal();
-}
-function escapeHTML(value){
-  return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-}
-
-document.getElementById("searchForm").addEventListener("submit", event => {
-  event.preventDefault();
-  activeQuery = searchInput.value;
-  divisionFilter.value = "";
-  document.getElementById("districtHeading").textContent = activeQuery.trim() ? `"${activeQuery.trim()}" খোঁজার ফলাফল` : "জেলাগুলো খুঁজুন";
-  renderDistricts();
-  document.getElementById("explore").scrollIntoView({behavior:"smooth"});
-});
-searchInput.addEventListener("input", () => {
-  if(!searchInput.value.trim()){
-    activeQuery = "";
-    document.getElementById("districtHeading").textContent = "জেলাগুলো খুঁজুন";
-    renderDistricts();
+  .hero-content {
+    margin-top: 38px;
   }
-});
-divisionFilter.addEventListener("change", () => {
-  activeQuery = "";
-  searchInput.value = "";
-  document.getElementById("districtHeading").textContent = divisionFilter.value ? `${divisionFilter.value} বিভাগের জেলা` : "জেলাগুলো খুঁজুন";
-  renderDistricts();
-});
-document.getElementById("clearSearch").addEventListener("click", () => {
-  activeQuery = ""; searchInput.value = ""; divisionFilter.value = "";
-  document.getElementById("districtHeading").textContent = "জেলাগুলো খুঁজুন";
-  renderDistricts();
-});
-document.getElementById("dialogClose").addEventListener("click", () => dialog.close());
-dialog.addEventListener("click", event => { if(event.target === dialog) dialog.close(); });
-document.getElementById("year").textContent = new Date().getFullYear();
 
-renderDivisions();
-renderDistricts();
+  .search-box button {
+    padding: 9px 13px;
+  }
+
+  .section-heading h2 {
+    font-size: 22px;
+  }
+
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  footer {
+    flex-direction: column;
+  }
+}
