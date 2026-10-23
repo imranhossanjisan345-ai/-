@@ -1,254 +1,308 @@
 
-  text-align: center;
+const GEO_URL =
+  "https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json";
+
+const $ = (id) => document.getElementById(id);
+
+const divisionGrid = $("divisionGrid");
+const districtGrid = $("districtGrid");
+const divisionFilter = $("divisionFilter");
+const districtHeading = $("districtHeading");
+const emptyState = $("emptyState");
+const searchForm = $("searchForm");
+const searchInput = $("searchInput");
+const clearSearch = $("clearSearch");
+const areaDialog = $("areaDialog");
+const dialogContent = $("dialogContent");
+const dialogClose = $("dialogClose");
+
+let divisions = [];
+let allDistricts = [];
+let allUpazilas = [];
+let activeDivision = "";
+let activeDistrict = "";
+
+const icons = ["📍", "🏞️", "🏛️", "🌿", "🌊", "🏘️"];
+
+function showStatus(message) {
+  districtGrid.innerHTML = "";
+  const box = document.createElement("div");
+  box.className = "empty-state";
+  box.textContent = message;
+  districtGrid.appendChild(box);
 }
 
-.eyebrow {
-  color: #a6dfc0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+function getName(item) {
+  return item?.bn_name || item?.name || "নাম পাওয়া যায়নি";
 }
 
-.hero h1 {
-  font-size: clamp(30px, 5vw, 49px);
-  line-height: 1.3;
-  margin: 10px 0;
+function makeCard(title, subtitle, description, icon, action) {
+  const card = document.createElement("article");
+  card.className = "place-card";
+
+  const heading = document.createElement("div");
+  heading.className = "card-title";
+
+  const symbol = document.createElement("div");
+  symbol.className = "place-icon";
+  symbol.textContent = icon;
+
+  const textBox = document.createElement("div");
+  const h3 = document.createElement("h3");
+  h3.textContent = title;
+
+  const location = document.createElement("p");
+  location.className = "location";
+  location.textContent = subtitle;
+
+  textBox.append(h3, location);
+  heading.append(symbol, textBox);
+
+  const desc = document.createElement("p");
+  desc.className = "description";
+  desc.textContent = description;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "button-secondary";
+  button.textContent = "বিস্তারিত দেখুন";
+  button.addEventListener("click", action);
+
+  card.append(heading, desc, button);
+  return card;
 }
 
-.hero h1 span {
-  color: #a6e6c2;
-}
+function openDetails(title, lines) {
+  dialogContent.replaceChildren();
 
-.subtitle {
-  color: #d3e7dd;
-  margin-bottom: 25px;
-}
+  const heading = document.createElement("h2");
+  heading.textContent = title;
+  dialogContent.appendChild(heading);
 
-.search-box {
-  display: flex;
-  gap: 8px;
-  padding: 7px;
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 12px 35px #001b1433;
-}
+  lines.forEach((line) => {
+    const p = document.createElement("p");
+    p.textContent = line;
+    dialogContent.appendChild(p);
+  });
 
-.search-box input {
-  width: 100%;
-  min-width: 0;
-  border: 0;
-  outline: none;
-  padding: 12px;
-  font-family: inherit;
-  font-size: 15px;
-  color: var(--text);
-}
-
-.search-box button {
-  border: 0;
-  border-radius: 10px;
-  padding: 10px 22px;
-  background: var(--green);
-  color: white;
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.quick-search {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-  color: #d3e7dd;
-  font-size: 13px;
-}
-
-.quick-search button {
-  background: #ffffff14;
-  color: white;
-  border: 1px solid #ffffff55;
-  border-radius: 25px;
-  padding: 5px 12px;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-.container {
-  max-width: 1120px;
-  margin: auto;
-  padding: 35px 20px 55px;
-}
-
-.section-heading {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.section-heading h2 {
-  margin: 5px 0;
-  font-size: 27px;
-}
-
-.dark {
-  color: var(--green);
-  margin-bottom: 0;
-}
-
-#resultCount {
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.status {
-  padding: 13px 16px;
-  border-radius: 10px;
-  background: var(--mint);
-  color: var(--green);
-}
-
-.results {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
-}
-
-.place-card {
-  padding: 20px;
-  background: white;
-  border: 1px solid #e1ebe5;
-  border-radius: 16px;
-  box-shadow: 0 5px 18px #17352d08;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.place-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 26px #17352d12;
-}
-
-.card-title {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.place-icon {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 45px;
-  height: 45px;
-  background: var(--mint);
-  border-radius: 12px;
-  font-size: 23px;
-}
-
-.place-card h3 {
-  margin: 0;
-  font-size: 19px;
-}
-
-.location {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-.description {
-  color: #53665d;
-  font-size: 14px;
-  line-height: 1.8;
-  margin: 16px 0;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.tag {
-  color: #32644f;
-  background: #edf6f0;
-  padding: 4px 9px;
-  border-radius: 20px;
-  font-size: 12px;
-}
-
-.empty {
-  grid-column: 1 / -1;
-  padding: 30px 18px;
-  text-align: center;
-  border: 1px dashed #cbdcd2;
-  background: white;
-  border-radius: 15px;
-}
-
-.empty h3 {
-  margin-top: 0;
-}
-
-.info-box {
-  margin-top: 35px;
-  padding: 20px;
-  background: #eaf4ee;
-  border-radius: 14px;
-  line-height: 1.8;
-}
-
-.info-box h3,
-.info-box p {
-  margin-top: 0;
-}
-
-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-  padding: 18px max(20px, calc((100% - 1120px) / 2));
-  border-top: 1px solid #e1ebe5;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-@media (max-width: 800px) {
-  .results {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  if (typeof areaDialog.showModal === "function") {
+    areaDialog.showModal();
+  } else {
+    alert(title + "\n\n" + lines.join("\n"));
   }
 }
 
-@media (max-width: 550px) {
-  .results {
-    grid-template-columns: 1fr;
+function renderDivisions() {
+  divisionGrid.replaceChildren();
+  divisionFilter.replaceChildren();
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "সব বিভাগ";
+  divisionFilter.appendChild(defaultOption);
+
+  divisions.forEach((division, index) => {
+    const name = getName(division);
+
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    divisionFilter.appendChild(option);
+
+    const count = Array.isArray(division.districts)
+      ? division.districts.length
+      : 0;
+
+    const card = makeCard(
+      name,
+      "বাংলাদেশ",
+      `${count}টি জেলা তালিকাভুক্ত`,
+      icons[index % icons.length],
+      () => {
+        activeDivision = name;
+        activeDistrict = "";
+        divisionFilter.value = name;
+        renderAreas();
+        $("explore").scrollIntoView({ behavior: "smooth" });
+      }
+    );
+
+    divisionGrid.appendChild(card);
+  });
+}
+
+function buildAreaData() {
+  allDistricts = [];
+  allUpazilas = [];
+
+  divisions.forEach((division) => {
+    const divisionName = getName(division);
+
+    (division.districts || []).forEach((district) => {
+      const districtName = getName(district);
+
+      allDistricts.push({
+        ...district,
+        areaName: districtName,
+        divisionName
+      });
+
+      (district.upazilas || []).forEach((upazila) => {
+        allUpazilas.push({
+          ...upazila,
+          areaName: getName(upazila),
+          districtName,
+          divisionName
+        });
+      });
+    });
+  });
+}
+
+function renderAreas(query = "") {
+  districtGrid.replaceChildren();
+
+  const term = query.trim().toLocaleLowerCase("bn");
+  let results = [];
+
+  if (term) {
+    results = [
+      ...allDistricts.filter((item) =>
+        `${item.areaName} ${item.name || ""} ${item.divisionName}`
+          .toLocaleLowerCase("bn")
+          .includes(term)
+      ).map((item) => ({ ...item, type: "জেলা" })),
+
+      ...allUpazilas.filter((item) =>
+        `${item.areaName} ${item.name || ""} ${item.districtName} ${item.divisionName}`
+          .toLocaleLowerCase("bn")
+          .includes(term)
+      ).map((item) => ({ ...item, type: "উপজেলা" }))
+    ];
+  } else if (activeDistrict) {
+    results = allUpazilas
+      .filter((item) => item.districtName === activeDistrict)
+      .map((item) => ({ ...item, type: "উপজেলা" }));
+  } else {
+    results = allDistricts
+      .filter((item) =>
+        !activeDivision || item.divisionName === activeDivision
+      )
+      .map((item) => ({ ...item, type: "জেলা" }));
   }
 
-  .hero-content {
-    margin-top: 38px;
-  }
+  districtHeading.textContent = term
+    ? "সার্চের ফলাফল"
+    : activeDistrict
+      ? activeDistrict + " উপজেলার তালিকা"
+      : activeDivision
+        ? activeDivision + " বিভাগের জেলাগুলো"
+        : "বাংলাদেশের জেলাগুলো";
 
-  .search-box button {
-    padding: 9px 13px;
-  }
+  emptyState.hidden = results.length > 0;
 
-  .section-heading h2 {
-    font-size: 22px;
-  }
+  results.forEach((item, index) => {
+    const isUpazila = item.type === "উপজেলা";
 
-  .container {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
+    const card = makeCard(
+      item.areaName,
+      isUpazila
+        ? `${item.districtName} জেলা, ${item.divisionName} বিভাগ`
+        : `${item.divisionName} বিভাগ`,
+      isUpazila
+        ? "এই উপজেলার স্থানীয় পরিচিতি ও তথ্য এখানে যোগ করা যাবে।"
+        : "এই জেলার উপজেলা ও এলাকার পরিচিতি দেখতে ক্লিক করুন।",
+      icons[index % icons.length],
+      () => {
+        if (isUpazila) {
+          openDetails(item.areaName, [
+            "ধরন: উপজেলা",
+            "জেলা: " + item.districtName,
+            "বিভাগ: " + item.divisionName,
+            "স্থানীয় ইতিহাস, দর্শনীয় স্থান ও সূত্রের তথ্য পরে যোগ করা যাবে।"
+          ]);
+        } else {
+          activeDistrict = item.areaName;
+          activeDivision = item.divisionName;
+          divisionFilter.value = activeDivision;
+          renderAreas();
+        }
+      }
+    );
 
-  footer {
-    flex-direction: column;
+    districtGrid.appendChild(card);
+  });
+}
+
+async function init() {
+  $("year").textContent = new Date().getFullYear();
+  showStatus("বিভাগ, জেলা ও উপজেলার তথ্য লোড হচ্ছে...");
+
+  try {
+    const response = await fetch(GEO_URL);
+
+    if (!response.ok) {
+      throw new Error("তথ্য সার্ভার থেকে পাওয়া যায়নি");
+    }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data) || data.length === 0) {
+      throw new Error("তথ্যের তালিকা খালি");
+    }
+
+    divisions = data;
+    buildAreaData();
+    renderDivisions();
+    renderAreas();
+
+  } catch (error) {
+    console.error("Area data loading error:", error);
+    showStatus(
+      "এলাকার তথ্য লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করে পেজ রিফ্রেশ করুন।"
+    );
   }
 }
+
+searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  activeDivision = "";
+  activeDistrict = "";
+  divisionFilter.value = "";
+  renderAreas(searchInput.value);
+  $("explore").scrollIntoView({ behavior: "smooth" });
+});
+
+searchInput.addEventListener("input", () => {
+  if (!searchInput.value.trim()) {
+    activeDistrict = "";
+    renderAreas();
+  }
+});
+
+divisionFilter.addEventListener("change", () => {
+  activeDivision = divisionFilter.value;
+  activeDistrict = "";
+  searchInput.value = "";
+  renderAreas();
+});
+
+clearSearch.addEventListener("click", () => {
+  searchInput.value = "";
+  divisionFilter.value = "";
+  activeDivision = "";
+  activeDistrict = "";
+  renderAreas();
+});
+
+dialogClose.addEventListener("click", () => {
+  areaDialog.close();
+});
+
+areaDialog.addEventListener("click", (event) => {
+  if (event.target === areaDialog) {
+    areaDialog.close();
+  }
+});
+
+init();
